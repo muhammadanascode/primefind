@@ -1,0 +1,59 @@
+
+
+.jsformWrapper {
+    border: 1px solid rgba(196, 21, 28, 0.50);
+    padding: 2rem;
+    width: 600px;
+    height: 1400px;
+    margin: 0 auto;
+    border-radius: 2px;
+    margin-top: 2rem;
+    box-shadow: 0 7px 5px #eee;
+    padding-bottom: 4rem;
+}
+
+.jsformWrapper .formFielWrapper label {
+    width: 300px;
+    float: left;
+}
+
+.jsformWrapper .formFielWrapper input {
+    width: 300px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    float: left;
+    font-family: sans-serif;
+}
+
+.jsformWrapper .formFielWrapper select {
+    width: 300px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    float: left;
+    font-family: sans-serif;
+}
+
+.jsformWrapper .formFielWrapper {
+    float: left;
+    margin-bottom: 1rem;
+}
+
+.jsformWrapper button {
+    background: rgba(196, 21, 28, 1);
+    border: none;
+    color: #fff;
+    width: 120px;
+    height: 40px;
+    line-height: 25px;
+    font-size: 16px;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+.head{
+    text-align: center;
+    margin-top: 3rem;
+    color: rgba(196, 21, 28, 1);
+}
