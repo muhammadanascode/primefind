@@ -63,8 +63,12 @@ export default function Checkout({
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          cardDetails,
           subtotal,
+          orderID: Math.floor(Math.random() * 100000).toString(),
           description: "I'm paying to purchase a product",
+          email,
+          mobileNumber,
           time: formatDateToyyyyMMddHHmmss(new Date()),
         }),
       }
@@ -82,119 +86,118 @@ export default function Checkout({
 
   return (
     <>
-    <button onClick={handleCheckOut}>Pay with Jazz Cash</button>
-      {/* <div className="container mx-auto p-4"> */}
-        {/* <h1 className="text-2xl font-bold mb-4 text-center bg-pink-700 p-2  text-white rounded-lg"> */}
-          {/* CHECK OUT - DETAILS */}
-        {/* </h1> */}
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4 text-center bg-pink-700 p-2  text-white rounded-lg">
+          CHECK OUT - DETAILS
+        </h1>
 
         {/* <!-- Shipping Address Section --> */}
-        {/* <div className="mb-6"> */}
-          {/* <h2 className="text-lg font-bold mb-2 text-pink-800 underline"> */}
-            {/* Shipping Address */}
-          {/* </h2> */}
-          {/* <div className="bg-white rounded p-4 shadow-md"> */}
-            {/* <div className="mb-4"> */}
-              {/* <label htmlFor="name" className="block font-medium"> */}
-                {/* Full Name */}
-              {/* </label> */}
-              {/* <input */}
-                {/* // type="text" */}
-                {/* // id="name" */}
-                {/* // name="name" */}
-                {/* // value={name} */}
-                {/* // onChange={handleChange} */}
-                {/* // className="w-full border px-4 py-2 rounded" */}
-              {/* // /> */}
-            {/* </div> */}
-            {/* <div className="mb-4"> */}
-              {/* <label htmlFor="email" className="block font-medium"> */}
-                {/* Email */}
-              {/* </label> */}
-              {/* <input */}
-                {/* // id="address" */}
-                {/* // name="email" */}
-                {/* // value={email} */}
-                {/* // type="email" */}
-                {/* // onChange={handleChange} */}
-                {/* // className="w-full border px-4 py-2 rounded" */}
-              {/* // ></input> */}
-            {/* </div> */}
-            {/* <div className="mb-4"> */}
-              {/* <label htmlFor="mobile-number" className="block font-medium"> */}
-                {/* Mobile Number */}
-              {/* </label> */}
-              {/* <input */}
-                {/* // type="number" */}
-                {/* // id="city" */}
-                {/* // name="mobile-number" */}
-                {/* // value={mobileNumber} */}
-                {/* // onChange={handleChange} */}
-                {/* // className="w-full border px-4 py-2 rounded" */}
-              {/* // /> */}
-            {/* </div> */}
+        <div className="mb-6">
+          <h2 className="text-lg font-bold mb-2 text-pink-800 underline">
+            Shipping Address
+          </h2>
+          <div className="bg-white rounded p-4 shadow-md">
+            <div className="mb-4">
+              <label htmlFor="name" className="block font-medium">
+                Full Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={name}
+                onChange={handleChange}
+                className="w-full border px-4 py-2 rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="email" className="block font-medium">
+                Email
+              </label>
+              <input
+                id="address"
+                name="email"
+                value={email}
+                type="email"
+                onChange={handleChange}
+                className="w-full border px-4 py-2 rounded"
+              ></input>
+            </div>
+            <div className="mb-4">
+              <label htmlFor="mobile-number" className="block font-medium">
+                Mobile Number
+              </label>
+              <input
+                type="number"
+                id="city"
+                name="mobile-number"
+                value={mobileNumber}
+                onChange={handleChange}
+                className="w-full border px-4 py-2 rounded"
+              />
+            </div>
             {/* <!-- Add more fields like country, zip code, etc. --> */}
-          {/* </div> */}
-        {/* </div> */}
+          </div>
+        </div>
 
         {/* <!-- Payment Details Section --> */}
-        {/* <div> */}
-          {/* <h2 className="text-lg font-bold mb-2 text-pink-800 underline"> */}
-            {/* Payment Details */}
-          {/* </h2> */}
-          {/* <div className="bg-white rounded p-4 shadow-md"> */}
-            {/* <div className="mb-4"> */}
-              {/* <label htmlFor="card-number" className="block font-medium"> */}
-                {/* Card Number */}
-              {/* </label> */}
-              {/* <input */}
-                {/* // type="text" */}
-                {/* // id="card-number" */}
-                {/* // name="card-number" */}
-                {/* // onChange={handleChange} */}
-                {/* // value={cardNumber} */}
-                {/* // className="w-full border px-4 py-2 rounded" */}
-              {/* // /> */}
-            {/* </div> */}
-            {/* <div className="mb-4"> */}
-              {/* <label htmlFor="expiry-date" className="block font-medium"> */}
-                {/* Expiry Date */}
-              {/* </label> */}
-              {/* <input */}
-                {/* // type="date" */}
-                {/* // id="expiry-date" */}
-                {/* // name="expiry-date" */}
-                {/* // value={expiryDate} */}
-                {/* // onChange={handleChange} */}
-                {/* // className="w-full border px-4 py-2 rounded" */}
-              {/* // /> */}
-            {/* </div> */}
-            {/* <div className="mb-4"> */}
-              {/* <label htmlFor="cvc" className="block font-medium"> */}
-                {/* CVC */}
-              {/* </label> */}
-              {/* <input */}
-                {/* // type="text" */}
-                {/* // id="cvc" */}
-                {/* // name="cvc" */}
-                {/* // value={cvc} */}
-                {/* // onChange={handleChange} */}
-                {/* // className="w-full border px-4 py-2 rounded" */}
-              {/* // /> */}
-            {/* </div> */}
-          {/* </div> */}
-        {/* </div> */}
+        <div>
+          <h2 className="text-lg font-bold mb-2 text-pink-800 underline">
+            Payment Details
+          </h2>
+          <div className="bg-white rounded p-4 shadow-md">
+            <div className="mb-4">
+              <label htmlFor="card-number" className="block font-medium">
+                Card Number
+              </label>
+              <input
+                type="text"
+                id="card-number"
+                name="card-number"
+                onChange={handleChange}
+                value={cardNumber}
+                className="w-full border px-4 py-2 rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="expiry-date" className="block font-medium">
+                Expiry Date
+              </label>
+              <input
+                type="date"
+                id="expiry-date"
+                name="expiry-date"
+                value={expiryDate}
+                onChange={handleChange}
+                className="w-full border px-4 py-2 rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="cvc" className="block font-medium">
+                CVC
+              </label>
+              <input
+                type="text"
+                id="cvc"
+                name="cvc"
+                value={cvc}
+                onChange={handleChange}
+                className="w-full border px-4 py-2 rounded"
+              />
+            </div>
+          </div>
+        </div>
 
         {/* <!-- Place Order Button --> */}
-        {/* <div className="mt-6"> */}
-          {/* <button */}
-            {/* // onClick={handleCheckOut} */}
-            {/* // className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-2 rounded" */}
-          {/* // > */}
-            {/* Place Order */}
-          {/* </button> */}
-        {/* </div> */}
-      {/* </div> */}
+        <div className="mt-6">
+          <button
+            onClick={handleCheckOut}
+            className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-2 rounded"
+          >
+            Place Order
+          </button>
+        </div>
+      </div>
 
       {/* Reviewing Cart again Before checkout */}
       <div className="w-[90vw] sm:w-1/2 mx-auto mt-10">
