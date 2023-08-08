@@ -6,9 +6,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import LoadingBar from 'react-top-loading-bar'
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
-
 
 
 export default function App({ Component, pageProps }) {
@@ -18,7 +15,6 @@ export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({ value: null })
   const [key, setKey] = useState(0)
   const [progress, setProgress] = useState(0)
-  const stripePromise = loadStripe("pk_test_51NWgvFSHnwN76LwOsUeWqauaup6zeRZNzYtvckbKuzpqJgd4ILDp2xCfB0DCi3nlsZllHDov0cJPUA1MLcph8DSM00ly4qyyky");
 
 
   useEffect(() => {
@@ -166,12 +162,8 @@ export default function App({ Component, pageProps }) {
         pauseOnHover
         theme="light"
       />
-        <Elements stripe={stripePromise}>
-
           <Component cart={cart} addToCart={addToCart} removeFromCart=
             {removeFromCart} clearCart={clearCart} subtotal={subtotal}  {...pageProps} />
-
-        </Elements>
 
       <Footer />
     </>

@@ -4,34 +4,46 @@ import CryptoJS from "crypto-js";
 export default async (req, res) => {
   try {
     const jazzCashAPIBaseURL =
-      "https://sandbox.jazzcash.com.pk/ApplicationAPI/API/Purchase";
+      "https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/";
     const {
-      cardDetails,
       subtotal,
-      orderID,
       description,
-      email,
-      mobileNumber,
       time,
     } = req.body;
 
-    // Authenticating with JazzCash API using credentials
-    // Need to obtain and use actual JazzCash API credentials (Merchant ID, Secret Key)
+    //API CREDENTIALS
     const jazzCashAuthData = {
       UserName: `${process.env.MERCHANT_ID}`,
       Password: `${process.env.PASSWORD}`,
     };
-    // const authResponse = await axios.post(
-    //   `${jazzCashAPIBaseURL}/InitiateAuthentication`,
-    //   jazzCashAuthData
-    // );
-    // const accessToken = authResponse.data.access_token;
 
-    // Calculate the pp_SecureHash
-    const pp_SecureHashData = `${subtotal}&billRef&${cardDetails.cardNumber}&01/39&${cardDetails.cvc}&${description}&RECURRING&EN&${process.env.MERCHANT_ID}&${mobileNumber}&${process.env.NEXT_PUBLIC_HOST}&PKR&${time}&=20230920161116&${orderID}&1.1`;
+    const expiryDate = String(Number(time) + 10000);
+    const TxnRef = "T"+time
 
-    const app = process.env.PASSWORD + pp_SecureHashData
-    const pp_SecureHash = CryptoJS.HmacSHA256(app, process.env.PASSWORD).toString(CryptoJS.enc.Hex);
+    // Calculating the secure hash by using data
+    const pp_SecureHashData =  `${process.env.JAZZCASH_INTEGRITY_SALT}&
+    ${subtotal}& 
+    TBANK&
+    billRef&
+    ${description}&
+    EN&
+    ${process.env.MERCHANT_ID}&
+    ${process.env.PASSWORD}&
+    "RETL"&
+    ${process.env.NEXT_PUBLIC_HOST}&
+    PKR&
+    ${time}&
+    ${expiryDate}&
+    ${TxnRef}&
+    MWALLET&
+    1.1&
+    1&
+    2&
+    3&
+    4&
+    5`;
+
+    const pp_SecureHash = CryptoJS.HmacSHA256(pp_SecureHashData,process.env.JAZZCASH_INTEGRITY_SALT).toString(CryptoJS.enc.Hex);
 
     console.log(pp_SecureHash);
 
@@ -39,35 +51,33 @@ export default async (req, res) => {
     const cardTransactionData = {
       //This is a single transaction to authorize payment and transfer funds from payer's account to merchant’s account.
       pp_Version: "1.1",
-      pp_TxnType: "MPAY",
+      pp_TxnType: "MWALLET",
       pp_Language: "EN",
+      pp_SubMechantID: "",
+      pp_BankID: "TBANK",
+      pp_ProductID: "RETL",
       pp_ReturnURL: `${process.env.NEXT_PUBLIC_HOST}`,
-      pp_TxnRefNo: orderID,
+      pp_TxnRefNo: TxnRef,
       pp_MerchantID: `${process.env.MERCHANT_ID}`,
       pp_Password: `${process.env.PASSWORD}`,
       pp_Amount: subtotal,
       pp_TxnCurrency: "PKR",
       pp_TxnDateTime: time,
-      pp_TxnExpiryDateTime: "20230920161116",
+      pp_TxnExpiryDateTime: expiryDate,
       pp_BillReference: "billRef",
       pp_Description: description,
-      pp_CustomerCardNumber: cardDetails.cardNumber,
-      pp_CustomerCardExpiry: "01/39",
-      pp_CustomerCardCvv: cardDetails.cvc,
-      pp_SecureHash: "D6679851DFD198079CE4D70E7B7964D2715883E3E1AB57857682C785B6B67182", // Use the calculated pp_SecureHash here
-      ppmpf_1: mobileNumber,
-      pp_Frequency: "RECURRING",
+      pp_SecureHash: pp_SecureHash,
+      ppmpf_1: 1,
+      ppmpf_1: 2,
+      ppmpf_1: 3,
+      ppmpf_1: 4,
+      ppmpf_1: 5,
     };
 
     // Make a POST request to JazzCash API to process the card transaction
     const cardPaymentResponse = await axios.post(
-      `${jazzCashAPIBaseURL}/PAY`,
+      `${jazzCashAPIBaseURL}`,
       cardTransactionData
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${accessToken}`,
-      //   },
-      // }
     );
 
     // Return the JazzCash response to the frontend
