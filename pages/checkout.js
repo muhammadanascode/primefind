@@ -1,263 +1,158 @@
-import React, { useState } from "react";
-import { AiFillPlusCircle } from "react-icons/ai";
-import { AiFillMinusCircle } from "react-icons/ai";
+import React, { useState } from 'react';
+import CryptoJS from 'crypto-js';
 
-export default function Checkout({
-  cart,
-  addToCart,
-  removeFromCart,
-  subtotal,
-}) {
-  // States for payment Details
-  const [name, setName] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [cvc, setCvc] = useState("");
+const Checkout = ({subtotal}) => {
+  const [pp_Amount, setPp_Amount] = useState(subtotal);
+  const [pp_BillReference, setPp_BillReference] = useState('billRef');
+  const [pp_Description, setPp_Description] = useState('A product purchased by a user');
+  const [pp_Language, setPp_Language] = useState('EN');
+  const [pp_MerchantID] = useState('MC58705');
+  const [pp_Password] = useState('v49yw9v36v');
+  const [pp_ReturnURL] = useState('https://stackoverflow.com/');
+  const [pp_SubMerchantID, setPp_SubMerchantID] = useState('');
+  const [pp_TxnCurrency] = useState('PKR');
+  const [pp_TxnDateTime, setPp_TxnDateTime] = useState('20230807210620');
+  const [pp_TxnExpiryDateTime, setPp_TxnExpiryDateTime] = useState('20230808210620');
+  const [pp_TxnRefNo, setPp_TxnRefNo] = useState('T20230807210620');
+  const [pp_TxnType, setPp_TxnType] = useState('');
+  const [pp_Version] = useState('1.1');
+  const [ppmpf_1] = useState('1');
+  const [ppmpf_2] = useState('2');
+  const [ppmpf_3] = useState('3');
+  const [ppmpf_4] = useState('4');
+  const [ppmpf_5] = useState('5');
+  const [salt] = useState('txwd00vx86');
+  const [pp_SecureHash, setPp_SecureHash] = useState('0123456789');
+  const [hashValuesString, setHashValuesString] = useState('');
 
-  //Onchange function to capture the value of every input
-  const handleChange = (e) => {
-    if (e.target.name === "name") {
-      setName(e.target.value);
-    } else if (e.target.name === "mobile-number") {
-      setMobileNumber(e.target.value);
-    } else if (e.target.name === "email") {
-      setEmail(e.target.value);
-    } else if (e.target.name === "card-number") {
-      setCardNumber(e.target.value);
-    } else if (e.target.name === "expiry-date") {
-      setExpiryDate(e.target.value);
-    } else if (e.target.name === "cvc") {
-      setCvc(e.target.value);
+  const CalculateHash = () => {
+    let hashString = '';
+
+    hashString += salt + '&';
+    if (pp_Amount !== '') {
+      hashString += pp_Amount + '&';
     }
+    if (pp_BillReference !== '') {
+      hashString += pp_BillReference + '&';
+    }
+    if (pp_Description !== '') {
+      hashString += pp_Description + '&';
+    }
+    if (pp_Language !== '') {
+      hashString += pp_Language + '&';
+    }
+    if (pp_MerchantID !== '') {
+      hashString += pp_MerchantID + '&';
+    }
+    if (pp_Password !== '') {
+      hashString += pp_Password + '&';
+    }
+    if (pp_ReturnURL !== '') {
+      hashString += pp_ReturnURL + '&';
+    }
+    if (pp_SubMerchantID !== '') {
+      hashString += pp_SubMerchantID + '&';
+    }
+    if (pp_TxnCurrency !== '') {
+      hashString += pp_TxnCurrency + '&';
+    }
+    if (pp_TxnDateTime !== '') {
+      hashString += pp_TxnDateTime + '&';
+    }
+    if (pp_TxnExpiryDateTime !== '') {
+      hashString += pp_TxnExpiryDateTime + '&';
+    }
+    if (pp_TxnRefNo !== '') {
+      hashString += pp_TxnRefNo + '&';
+    }
+    if (pp_TxnType !== '') {
+      hashString += pp_TxnType + '&';
+    }
+    if (pp_Version !== '') {
+      hashString += pp_Version + '&';
+    }
+    if (ppmpf_1 !== '') {
+      hashString += ppmpf_1 + '&';
+    }
+    if (ppmpf_2 !== '') {
+      hashString += ppmpf_2 + '&';
+    }
+    if (ppmpf_3 !== '') {
+      hashString += ppmpf_3 + '&';
+    }
+    if (ppmpf_4 !== '') {
+      hashString += ppmpf_4 + '&';
+    }
+    if (ppmpf_5 !== '') {
+      hashString += ppmpf_5 + '&';
+    }
+
+    hashString = hashString.slice(0, -1);
+    setHashValuesString(hashString);
+
+    const hash = CryptoJS.HmacSHA256(hashString, salt).toString();
+    setPp_SecureHash(hash);
+    console.log('string: ' + hashString);
+    console.log('hash: ' + hash);
   };
 
-  //Making Object of Card Details
-  const cardDetails = {
-    cardNumber,
-    expiryDate,
-    cvc,
-  };
-
-  //Formatting date according to the documentation of JazzCash
-  function formatDateToyyyyMMddHHmmss(date) {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // January is month 0, so add 1 and pad with leading zero if necessary
-    const day = String(date.getDate()).padStart(2, "0"); // Pad day with leading zero if necessary
-    const hours = String(date.getHours()).padStart(2, "0"); // Pad hours with leading zero if necessary
-    const minutes = String(date.getMinutes()).padStart(2, "0"); // Pad minutes with leading zero if necessary
-    const seconds = String(date.getSeconds()).padStart(2, "0"); // Pad seconds with leading zero if necessary
-
-    return `${year}${month}${day}${hours}${minutes}${seconds}`;
-  }
-
-  // CheckOut Functionality
-  const handleCheckOut = async () => {
-    //Fetching Api from backend
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HOST}/api/payment`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          cardDetails,
-          subtotal,
-          orderID: Math.floor(Math.random() * 100000).toString(),
-          description: "I'm paying to purchase a product",
-          email,
-          mobileNumber,
-          time: formatDateToyyyyMMddHHmmss(new Date()),
-        }),
-      }
-    );
-    //Converting response to json
-    const res = await response.json();
-    console.log(res);
-    // setName("");
-    // setEmail("");
-    // setMobileNumber("");
-    // setCardNumber("");
-    // setCvc("");
-    // setExpiryDate("");
+  const submitForm = () => {
+    CalculateHash();
+    document.jsform.submit();
   };
 
   return (
     <>
-      <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4 text-center bg-pink-700 p-2  text-white rounded-lg">
-          CHECK OUT - DETAILS
-        </h1>
-
-        {/* <!-- Shipping Address Section --> */}
-        <div className="mb-6">
-          <h2 className="text-lg font-bold mb-2 text-pink-800 underline">
-            Shipping Address
-          </h2>
-          <div className="bg-white rounded p-4 shadow-md">
-            <div className="mb-4">
-              <label htmlFor="name" className="block font-medium">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={name}
-                onChange={handleChange}
-                className="w-full border px-4 py-2 rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block font-medium">
-                Email
-              </label>
-              <input
-                id="address"
-                name="email"
-                value={email}
-                type="email"
-                onChange={handleChange}
-                className="w-full border px-4 py-2 rounded"
-              ></input>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="mobile-number" className="block font-medium">
-                Mobile Number
-              </label>
-              <input
-                type="number"
-                id="city"
-                name="mobile-number"
-                value={mobileNumber}
-                onChange={handleChange}
-                className="w-full border px-4 py-2 rounded"
-              />
-            </div>
-            {/* <!-- Add more fields like country, zip code, etc. --> */}
+      <h3>JazzCash HTTP POST (Page Redirection) Testing</h3>
+      <div className="jsformWrapper">
+        <form name="jsform" method="post" action="https://sandbox.jazzcash.com.pk/CustomerPortal/transactionmanagement/merchantform/">
+          <div className="formFielWrapper">
+            <label className="active">pp_Version: </label>
+            <input type="text" name="pp_Version" value="1.1" readOnly={true} />
           </div>
-        </div>
 
-        {/* <!-- Payment Details Section --> */}
-        <div>
-          <h2 className="text-lg font-bold mb-2 text-pink-800 underline">
-            Payment Details
-          </h2>
-          <div className="bg-white rounded p-4 shadow-md">
-            <div className="mb-4">
-              <label htmlFor="card-number" className="block font-medium">
-                Card Number
-              </label>
-              <input
-                type="text"
-                id="card-number"
-                name="card-number"
-                onChange={handleChange}
-                value={cardNumber}
-                className="w-full border px-4 py-2 rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="expiry-date" className="block font-medium">
-                Expiry Date
-              </label>
-              <input
-                type="date"
-                id="expiry-date"
-                name="expiry-date"
-                value={expiryDate}
-                onChange={handleChange}
-                className="w-full border px-4 py-2 rounded"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="cvc" className="block font-medium">
-                CVC
-              </label>
-              <input
-                type="text"
-                id="cvc"
-                name="cvc"
-                value={cvc}
-                onChange={handleChange}
-                className="w-full border px-4 py-2 rounded"
-              />
-            </div>
+          <div className="formFielWrapper">
+            <label className="">pp_TxnType: </label>
+            <input type="text" name="pp_TxnType" value={pp_TxnType} onChange={(e) => setPp_TxnType(e.target.value)} />
           </div>
-        </div>
 
-        {/* <!-- Place Order Button --> */}
-        <div className="mt-6">
-          <button
-            onClick={handleCheckOut}
-            className="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-4 py-2 rounded"
-          >
-            Place Order
-          </button>
-        </div>
-      </div>
+          {/* Additional form fields can be added here */}
+          {/* For Card Tokenization Version should be 2.0 */}
 
-      {/* Reviewing Cart again Before checkout */}
-      <div className="w-[90vw] sm:w-1/2 mx-auto mt-10">
-        <h1 className="text-xl sm:text-3xl text-center font-semibold">
-          Review Your Cart
-        </h1>
-        <div className="w-full sm:w-1/2 mx-auto my-5 sideCart h-1/3 bg-pink-100 p-10">
-          <h2 className="font-bold text-xl">Shopping Cart</h2>
-          <ol className="list-decimal">
-            {Object.keys(cart).length > 0 ? (
-              Object.keys(cart).map((item) => {
-                return (
-                  <li key={item}>
-                    <div className="item flex my-5">
-                      <div className="w-2/3 font-semibold flex items-center justify-center">
-                        {cart[item].name}({cart[item].size}/{cart[item].variant}
-                        )
-                      </div>
-                      <div className="flex font-semibold items-center justify-center w-1/3 text-6xl">
-                        <AiFillMinusCircle
-                          onClick={() => {
-                            removeFromCart(
-                              item,
-                              1,
-                              "Karachi",
-                              cart[item].price,
-                              cart[item].title,
-                              cart[item].size,
-                              cart[item].variant
-                            );
-                          }}
-                          className="text-pink-600 cursor-pointer"
-                        />
-                        <span className="mx-4 text-sm">{cart[item].qty}</span>
-                        <AiFillPlusCircle
-                          onClick={() => {
-                            addToCart(
-                              item,
-                              1,
-                              "Karachi",
-                              cart[item].price,
-                              cart[item].title,
-                              cart[item].size,
-                              cart[item].variant
-                            );
-                          }}
-                          className="text-pink-600 cursor-pointer"
-                        />
-                      </div>
-                    </div>
-                  </li>
-                );
-              })
-            ) : (
-              <p className="my-2 font-semibold">No items in the cart</p>
-            )}
-          </ol>
-          <p className="font-semibold">Subtotal: ₹{subtotal}</p>
+          <div className="formFielWrapper">
+            <label className="active">pp_MerchantID: </label>
+            <input type="text" name="pp_MerchantID" value={pp_MerchantID} readOnly={true} />
+          </div>
+
+          {/* Rest of the form fields go here */}
+
+          <div className="formFielWrapper">
+            <label className="active">pp_SecureHash: </label>
+            <input type="text" name="pp_SecureHash" value={pp_SecureHash} />
+          </div>
+
+          <div className="formFielWrapper">
+            <label className="active">ppmpf 1: </label>
+            <input type="text" name="ppmpf_1" value={ppmpf_1} readOnly={true} />
+          </div>
+
+          {/* Rest of the ppmpf fields go here */}
+
+          <button type="button" onClick={submitForm}>Submit</button>
+        </form>
+
+        <input type="hidden" name="salt" value={salt} />
+        <br />
+        <br />
+        <div className="formFielWrapper" style={{ marginBottom: '2rem' }}>
+          <label className="">Hash values string: </label>
+          <input type="text" id="hashValuesString" value={hashValuesString} readOnly={true} />
+          <br />
+          <br />
         </div>
       </div>
     </>
   );
-}
+};
+
+export default Checkout;
