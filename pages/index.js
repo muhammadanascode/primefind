@@ -20,7 +20,7 @@ export default function Home() {
             <p className="mt-4 tracking-widest font-bold text-5xl md:text-6xl bg-white w-32 md:w-48 px-2 md:px-4">
               LET'S
             </p>
-            <p className="mt-4 tracking-widest text-5xl md:text-6xl">EXPLORE</p>
+            <p className="mt-4  tracking-widest text-6xl md:text-6xl">EXPLORE</p>
             <p className="mt-4 font-bold tracking-widest text-5xl  bg-yellow-500 w-72 md:text-6xl ">
               UNIQUE
             </p>
@@ -29,12 +29,10 @@ export default function Home() {
             At PrimeFind, our ecommerce platform is your gateway to a world of exceptional products that cater to every facet of your needs and desires. We take you  to the latest fashion trends.
             </p>
           </div>
-          <div className="flex ">
-            <div className="w-1/4 h-1 bg-yellow-500"></div>
-            <button className=" w-1/8 bg-pink-500 rounded-md text-white p-2 -mt-4 hover:bg-pink-700">
+          <div className="flex text-center">
+            <button className=" w-3/4 bg-pink-500 rounded-md text-white p-2  -mt-4 hover:bg-pink-700">
               <Link href={"/tshirts"}>Shop Now</Link>
             </button>
-            <div className="w-1/4 h-1 bg-yellow-500"></div>
           </div>
         </div>
         <div className="md:w-1/2 mt-4 md:mt-0">
