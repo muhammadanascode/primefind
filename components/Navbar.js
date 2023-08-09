@@ -31,7 +31,7 @@ export default function Navbar({Logout , user, cart, addToCart, removeFromCart, 
         <>
             {/* Navbar */}
 
-            <div className='w-full flex flex-col md:flex-row md:justify-start justify-center items-center shadow-md sticky bg-white top-0 z-10'>
+            <div className='w-full flex flex-col md:flex-row md:justify-start justify-center items-center shadow-md shadow-pink-300 sticky bg-white top-0 z-10'>
                 <div className='logo mx-5'><Link href={'/'}><Image alt='img' className='cursor-pointer' src='/Tshirt.png' width={150} height={60} /></Link></div>
                 <div className="nav ml-10">
                     <ul className='flex items-center space-x-6 font-bold text-sm  '>
