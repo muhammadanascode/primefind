@@ -164,7 +164,7 @@ const buyNow = async ()=>{
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">RS: {data.price}</span>
 
-              <button onClick={() => { addToCart(slug+size+color, 1, "Karachi", data.price, data.title , size, color) }} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6">
+              <button onClick={() => { addToCart(slug+size+color, 1, "Karachi", data.price, data.title , size, color,data.img) }} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6">
                 Add to Cart</button>
 
               <button onClick={buyNow} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6">
