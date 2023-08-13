@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <Head>
         <title>
-          PrimeFind-Discover the ultimate selection of prime products{" "}
+          PrimeFind-Discover the ultimate selection of prime products
         </title>
       </Head>
       <div className="w-full m-auto mt-4 bg-gray-200 p-4 md:w-4/5 md:h-full md:flex">
@@ -37,7 +37,7 @@ export default function Home() {
         </div>
         <div className="md:w-1/2 mt-4 md:mt-0">
           {/* Image */}
-          <Image className="mt-2" src={"/girl2.png"} width={480} height={200} />
+          <Image className="mt-2" src={"/girl2.png"} width={480} height={200} alt="img" />
         </div>
       </div>
     </>

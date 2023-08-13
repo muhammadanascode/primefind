@@ -1,8 +1,7 @@
-import Image from 'next/image'
-import Link from 'next/link'
 import React from 'react'
 
 const Order = ({ subtotal, cart }) => {
+    // console.log(cart);
     return (
         <>
             <section className="text-gray-600 body-font overflow-hidden">
@@ -17,21 +16,15 @@ const Order = ({ subtotal, cart }) => {
                                 <span className="font-semibold ml-auto text-gray-900">Quantity</span>
                                 <span className="font-semibold ml-auto text-gray-900">Price</span>
                             </div>
-                            <div className="flex border-t border-gray-200 py-2">
-                                <span className="text-gray-500">Mug</span>
-                                <span className="ml-auto text-gray-900">1</span>
-                                <span className="ml-auto text-gray-900">499</span>
-                            </div>
-                            <div className="flex border-t border-gray-200 py-2">
-                                <span className="text-gray-500">T-shirt</span>
-                                <span className="ml-auto text-gray-900">1</span>
-                                <span className="ml-auto text-gray-900">510</span>
-                            </div>
-                            <div className="flex border-t border-b mb-6 border-gray-200 py-2">
-                                <span className="text-gray-500">Hoodie</span>
-                                <span className="ml-auto text-gray-900">1</span>
-                                <span className="ml-auto text-gray-900">1500</span>
-                            </div>
+                           {Object.keys(cart).length > 0 ? Object.keys(cart).map((item)=>{
+                         return <div className="flex border-t border-gray-200 py-2">
+                        <span className="text-gray-500">{cart[item].name}</span>
+                        <span className="ml-auto text-gray-900">{cart[item].qty}</span>
+                        <span className="ml-auto text-gray-900">{cart[item].price}</span> </div>})
+                         : <p>Nothing to display</p> }
+                             
+                             
+                             
                             <div className="flex">
                                 <span className="title-font font-medium text-2xl text-gray-900">Subtotal ₹{subtotal}</span>
                                 <button className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-6 focus:outline-none hover:bg-pink-600 rounded">Track Order</button>
