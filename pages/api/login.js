@@ -15,12 +15,12 @@ router.post(async (req, res) => {
 
         if (User) {
 
-            var bytes = CryptoJS.AES.decrypt(User.password, 'secretkey123');
+            var bytes = CryptoJS.AES.decrypt(User.password, process.env.AES_SECRET);
             var decryptedPassword = bytes.toString(CryptoJS.enc.Utf8);
             // console.log("Decrypted Password is     :  " + decryptedPassword);
 
             if (decryptedPassword === req.body.password) {
-                var token = jwt.sign({name:user.name}, 'shhhhh' , {
+                var token = jwt.sign({name:user.name}, process.env.JWT_SECRET , {
                  expiresIn:"2d"   
                 });
                 // console.log(token);
