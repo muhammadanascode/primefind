@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import LoadingBar from 'react-top-loading-bar'
 
 
+
 export default function App({ Component, pageProps }) {
   const router = useRouter()
   const [cart, setCart] = useState({})
@@ -15,6 +16,8 @@ export default function App({ Component, pageProps }) {
   const [user, setUser] = useState({ value: null })
   const [key, setKey] = useState(0)
   const [progress, setProgress] = useState(0)
+  const [paymentInfo, setPaymentInfo] = useState(null)
+
 
 
   useEffect(() => {
@@ -139,6 +142,10 @@ export default function App({ Component, pageProps }) {
 
   }
 
+ const handlePayment = (Info)=>{
+  setPaymentInfo(Info)
+ }
+
   return (
     <>
 
@@ -163,7 +170,8 @@ export default function App({ Component, pageProps }) {
         theme="light"
       />
           <Component cart={cart} addToCart={addToCart} removeFromCart=
-            {removeFromCart} clearCart={clearCart} subtotal={subtotal}  {...pageProps} />
+            {removeFromCart} clearCart={clearCart} subtotal={subtotal} handlePayment= {handlePayment}
+            paymentInfo = {paymentInfo}  {...pageProps} />
 
       <Footer />
     </>

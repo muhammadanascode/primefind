@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
 
-const checkout = ({ subtotal, cart }) => {
-  const router = useRouter();
+const checkout = ({ subtotal, cart , handlePayment }) => {
 
+  const router = useRouter();
   //Handling CheckOut functionality
   const handleCheckOut = async (paymentInfo) => {
     console.log(paymentInfo);
@@ -27,7 +27,8 @@ const checkout = ({ subtotal, cart }) => {
     });
 
     const response = await res.json();
-    console.log(response);
+    // console.log(response);
+    handlePayment(paymentInfo);
 
     router.push("/order");
   };

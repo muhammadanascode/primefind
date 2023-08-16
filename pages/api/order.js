@@ -13,7 +13,7 @@ router.post(async (req, res) => {
     const Order =  new order({
       email: req.body.email,
       orderId: req.body.orderId,
-      products: [req.body.products],
+      products: req.body.products,
       address: req.body.address,
       amount: req.body.amount,
       status: req.body.status,

@@ -1,8 +1,9 @@
 import Image from "next/image";
 import React from "react";
 
-const Order = ({ subtotal, cart }) => {
+const Order = ({ subtotal, cart ,paymentInfo }) => {
   // console.log(cart);
+  // console.log(paymentInfo);
   return (
     <>
       <section className="text-gray-600 body-font overflow-hidden">
@@ -12,8 +13,8 @@ const Order = ({ subtotal, cart }) => {
               <h2 className="text-sm title-font text-gray-500 tracking-widest">
                 PRIME FIND
               </h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-4">
-                Order ID - 8795864
+              <h1 className="text-gray-900 text-2xl title-font font-medium mb-4">
+                Order ID : {paymentInfo.id}
               </h1>
               <p className="leading-relaxed mb-4">
                 Your Order has been placed successfully.
