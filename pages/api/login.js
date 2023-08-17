@@ -20,7 +20,7 @@ router.post(async (req, res) => {
             // console.log("Decrypted Password is     :  " + decryptedPassword);
 
             if (decryptedPassword === req.body.password) {
-                var token = jwt.sign({name:user.name}, process.env.JWT_SECRET , {
+                var token = jwt.sign({name:User.name,email:User.email}, process.env.JWT_SECRET , {
                  expiresIn:"2d"   
                 });
                 // console.log(token);

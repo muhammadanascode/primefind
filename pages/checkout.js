@@ -30,7 +30,7 @@ const checkout = ({ subtotal, cart , handlePayment }) => {
     // console.log(response);
     handlePayment(paymentInfo);
 
-    router.push("/order");
+    router.push(`/order?id=${paymentInfo.id}`);
   };
 
   return (
