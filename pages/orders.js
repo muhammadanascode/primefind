@@ -1,10 +1,12 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-const orders = ({ data }) => {
+const orders = ({}) => {
   // console.log(data);
   const router = useRouter();
+  const [orders, setOrders] = useState([]);
 
   async function fetchOrderS() {
     const response = await fetch(
@@ -19,6 +21,7 @@ const orders = ({ data }) => {
     );
     const res = await response.json();
     console.log(res);
+    setOrders(res.Orders);
   }
 
   useEffect(() => {
@@ -39,31 +42,41 @@ const orders = ({ data }) => {
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Product name
+                Order ID#
               </th>
               <th scope="col" className="px-6 py-3">
-                Color
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Category
+                Email
               </th>
               <th scope="col" className="px-6 py-3">
                 Price
               </th>
+              <th scope="col" className="px-6 py-3">
+                Details
+              </th>
             </tr>
           </thead>
+
           <tbody>
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                Apple MacBook Pro 17"
-              </th>
-              <td className="px-6 py-4">Silver</td>
-              <td className="px-6 py-4">Laptop</td>
-              <td className="px-6 py-4">$2999</td>
-            </tr>
+            {orders
+              ? orders.map((item) => (
+                  <tr
+                    key={item._id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                  >
+                    <td
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.orderId}
+                    </td>
+                    <td className="px-6 py-4">{item.email}</td>
+                    <td className="px-6 py-4">{item.amount}</td>
+                    <td className="px-6 py-4">
+                      <Link href={`/order?id=${item.orderId}`}>Details</Link>
+                    </td>
+                  </tr>
+                ))
+              : ""}
           </tbody>
         </table>
       </div>

@@ -14,7 +14,7 @@ router.post(async (req, res) => {
     const token = req.body.token;
     // console.log(token);
     const data = jwt.verify(token, process.env.JWT_SECRET);
-    console.log(data);
+    // console.log(data);
     const Order = await order.find({ email: data.email });
     res.status(200).json({ Orders: Order });
 
