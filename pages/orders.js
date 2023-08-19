@@ -20,7 +20,7 @@ const orders = ({}) => {
       }
     );
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
     setOrders(res.Orders);
   }
 

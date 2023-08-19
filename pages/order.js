@@ -4,7 +4,7 @@ import Image from "next/image";
 import { func } from "prop-types";
 import React from "react";
 
-const Order = ({ total  , product }) => {
+const Order = ({ total, product }) => {
   // console.log(product);
   return (
     <>
@@ -44,7 +44,8 @@ const Order = ({ total  , product }) => {
                         {product.products[item].qty}
                       </span>
                       <span className="ml-auto text-gray-900">
-                        {product.products[item].price}
+                        {product.products[item].price *
+                          product.products[item].qty}
                       </span>{" "}
                     </div>
                   );
@@ -84,7 +85,7 @@ export async function getServerSideProps(context) {
     // console.log(Order);
     let totalQuantity = 0;
     for (let item in Order.products) {
-      totalQuantity += Order.products[item].price;
+      totalQuantity += Order.products[item].price * Order.products[item].qty;
     }
     return {
       props: {

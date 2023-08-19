@@ -1,8 +1,12 @@
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter()
+  const handleClick = ()=>{
+    router.push('/tshirts')
+  }
   return (
     <>
       <Head>
@@ -30,8 +34,8 @@ export default function Home() {
             </p>
           </div>
           <div className="flex text-center">
-            <button className=" w-3/4 bg-pink-500 rounded-md text-white p-2  -mt-4 hover:bg-pink-700">
-              <Link href={"/tshirts"}>Shop Now</Link>
+            <button onClick={handleClick} className=" w-3/4 bg-pink-500 rounded-md text-white p-2  -mt-4 hover:bg-pink-700">
+              Shop Now
             </button>
           </div>
         </div>
