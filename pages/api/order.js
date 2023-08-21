@@ -9,6 +9,7 @@ const router = createRouter();
 
 router.post(async (req, res) => {
 
+  //initiating new order
   try {
     const Order =  new order({
       email: req.body.email,
@@ -18,11 +19,13 @@ router.post(async (req, res) => {
       amount: req.body.amount,
       status: req.body.status,
     });
+    //saving order in database
     await Order.save()
 
     res.status(200).json({success:"OrderInitiated"})
 
 
+    //Error handling
   } catch (error) {
     console.log("Error Occured in initiating in Order " + error);
   }
