@@ -1,13 +1,14 @@
 import { useRouter } from "next/router";
 import React from "react";
 import StripeCheckout from "react-stripe-checkout";
+import {  toast } from "react-toastify";
 
-const checkout = ({ subtotal, clearCart, cart , handlePayment }) => {
 
+const checkout = ({ subtotal, clearCart, cart, handlePayment }) => {
   const router = useRouter();
   //Handling CheckOut functionality
   const handleCheckOut = async (paymentInfo) => {
-    console.log(paymentInfo);
+    // console.log(paymentInfo);
 
     const obj = {
       email: paymentInfo.email,
@@ -27,10 +28,26 @@ const checkout = ({ subtotal, clearCart, cart , handlePayment }) => {
     });
 
     const response = await res.json();
-    // console.log(response);
-    handlePayment(paymentInfo);
-    clearCart()
-    router.push(`/order?id=${paymentInfo.id}`);
+    console.log(response);
+
+    if (response.success) {
+      handlePayment(paymentInfo);
+      clearCart();
+      router.push(`/order?id=${paymentInfo.id}`);
+    }
+
+    toast.error(response.message, {
+      position: "top-center",
+      autoClose: 500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+
   };
 
   return (
