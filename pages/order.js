@@ -1,7 +1,5 @@
-import NotFoundPage from "@/components/404";
 import order from "@/model/order";
 import Image from "next/image";
-import { func } from "prop-types";
 import React from "react";
 
 const Order = ({ total, product }) => {
