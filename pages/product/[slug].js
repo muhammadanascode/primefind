@@ -1,34 +1,33 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import product from "@/model/product"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import product from "@/model/product";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Error from "next/error";
 
+export default function Slug({ addToCart, data, error }) {
+  const router = useRouter();
+  const { slug } = router.query;
+  const [zipCode, setZipCode] = useState("");
+  const [service, setService] = useState(null);
+  const [size, setSize] = useState("");
+  const [color, setColor] = useState("");
 
-export default function Slug({ addToCart, data }) {
-
-
-  const router = useRouter()
-  const { slug } = router.query
-  const [zipCode, setZipCode] = useState("")
-  const [service, setService] = useState(null)
-  const [size, setSize] = useState("")
-  const [color, setColor] = useState("")
-
+  if (error) {
+    return <Error statusCode={404} />;
+  }
 
   function handleChange(e) {
-    setZipCode(e.target.value)
+    setZipCode(e.target.value);
   }
 
   async function handleClick() {
-
     try {
-
-      let pin = await fetch('http://localhost:3000/api/pincode')
-      let res = await pin.json()
+      let pin = await fetch("http://localhost:3000/api/pincode");
+      let res = await pin.json();
       console.log(res);
       if (res.includes(parseInt(zipCode))) {
-        toast.success(' Your pincode is servicable', {
+        toast.success(" Your pincode is servicable", {
           position: "top-center",
           autoClose: 1000,
           hideProgressBar: false,
@@ -37,13 +36,11 @@ export default function Slug({ addToCart, data }) {
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
-        setService(true)
-        setZipCode("")
-      }
-
-      else {
-        toast.error('Sorry! Your pincode is not servicable', {
+        });
+        setService(true);
+        setZipCode("");
+      } else {
+        toast.error("Sorry! Your pincode is not servicable", {
           position: "top-center",
           autoClose: 1000,
           hideProgressBar: false,
@@ -52,36 +49,39 @@ export default function Slug({ addToCart, data }) {
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
-        setService(false)
-        setZipCode("")
+        });
+        setService(false);
+        setZipCode("");
       }
-
     } catch (error) {
       console.log("Error occured" + error);
     }
-
   }
 
   // console.log(data.color);
 
-  const handleColor = (color)=>{
-    setColor(color)
-    console.log(color)
+  const handleColor = (color) => {
+    setColor(color);
+    console.log(color);
+  };
 
-  }
+  const handleSize = (size) => {
+    console.log(size);
+    setSize(size);
+  };
 
-  const handleSize = (size)=>{
-   console.log(size);
-   setSize(size)
-  }
-
-const buyNow = async ()=>{
-
- addToCart(slug+size+color, 1, "Karachi", data.price, data.title , size, color)
- router.push('/checkout')
-
-}
+  const buyNow = async () => {
+    addToCart(
+      slug + size + color,
+      1,
+      "Karachi",
+      data.price,
+      data.title,
+      size,
+      color
+    );
+    router.push("/checkout");
+  };
 
   return (
     <section className="text-gray-600 body-font overflow-hidden">
@@ -89,42 +89,111 @@ const buyNow = async ()=>{
 
       <div className="container px-5 py-24 mx-auto">
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
-          <img alt='img' className=" object-cover object-center rounded" src={data.img} />
+          <img
+            alt="img"
+            className=" object-cover object-center rounded"
+            src={data.img}
+          />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-            <h2 className="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
-            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{data.title}</h1>
+            <h2 className="text-sm title-font text-gray-500 tracking-widest">
+              BRAND NAME
+            </h2>
+            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+              {data.title}
+            </h1>
             <div className="flex mb-4">
               <span className="flex items-center">
-                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
+                <svg
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 text-pink-500"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
-                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
+                <svg
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 text-pink-500"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
-                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
+                <svg
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 text-pink-500"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
-                <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
+                <svg
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 text-pink-500"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
-                <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4 text-pink-500" viewBox="0 0 24 24">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 text-pink-500"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
                 </svg>
                 <span className="text-gray-600 ml-3">4 Reviews</span>
               </span>
               <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s">
                 <a className="text-gray-500">
-                  <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                  <svg
+                    fill="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
                   </svg>
                 </a>
                 <a className="text-gray-500">
-                  <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                  <svg
+                    fill="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
                   </svg>
                 </a>
                 <a className="text-gray-500">
-                  <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                  <svg
+                    fill="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                  >
                     <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
                   </svg>
                 </a>
@@ -135,26 +204,57 @@ const buyNow = async ()=>{
               <div className="flex">
                 <span className="mr-3">Color</span>
 
-                {Array.isArray(data.color) ? data.color.map((col) => {
-                  
-                  return <button onClick={(e)=>handleColor(e.target.value)} key={col} value={col} className={`border-2 border-${col}-300 bg-${col}-500  rounded-full w-6 h-6 focus:outline-none cursor-pointer`}></button>
-
-                }) : <button onClick={(e)=>handleColor(e.target.value)} value={data.color} className={`border-2 border-${data.color}-300 bg-${data.color}-500 rounded-full w-6 h-6 focus:outline-none cursor-pointer`}></button>}
-
+                {Array.isArray(data.color) ? (
+                  data.color.map((col) => {
+                    return (
+                      <button
+                        onClick={(e) => handleColor(e.target.value)}
+                        key={col}
+                        value={col}
+                        className={`border-2 border-${col}-300 bg-${col}-500  rounded-full w-6 h-6 focus:outline-none cursor-pointer`}
+                      ></button>
+                    );
+                  })
+                ) : (
+                  <button
+                    onClick={(e) => handleColor(e.target.value)}
+                    value={data.color}
+                    className={`border-2 border-${data.color}-300 bg-${data.color}-500 rounded-full w-6 h-6 focus:outline-none cursor-pointer`}
+                  ></button>
+                )}
               </div>
               <div className="flex ml-6 items-center">
                 <span className="mr-3">Size</span>
                 <div className="relative">
-                  <select value={size}  onChange={(e)=>handleSize(e.target.value)} className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
-                     <option value={""}>Select Size</option>
-                    {data.size.includes("S") ? <option value={"S"}>SM</option> : null}
-                    {data.size.includes("M") ? <option value={"M"}>M</option> : null}
-                    {data.size.includes("L") ? <option value={"L"}>L</option> : null}
-                    {data.size.includes("XL") ? <option value={"XL"} >XL</option> : null}
-
+                  <select
+                    value={size}
+                    onChange={(e) => handleSize(e.target.value)}
+                    className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
+                  >
+                    <option value={""}>Select Size</option>
+                    {data.size.includes("S") ? (
+                      <option value={"S"}>SM</option>
+                    ) : null}
+                    {data.size.includes("M") ? (
+                      <option value={"M"}>M</option>
+                    ) : null}
+                    {data.size.includes("L") ? (
+                      <option value={"L"}>L</option>
+                    ) : null}
+                    {data.size.includes("XL") ? (
+                      <option value={"XL"}>XL</option>
+                    ) : null}
                   </select>
                   <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-4 h-4" viewBox="0 0 24 24">
+                    <svg
+                      fill="none"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      className="w-4 h-4"
+                      viewBox="0 0 24 24"
+                    >
                       <path d="M6 9l6 6 6-6"></path>
                     </svg>
                   </span>
@@ -162,41 +262,88 @@ const buyNow = async ()=>{
               </div>
             </div>
             <div className="flex">
-              <span className="title-font font-medium text-2xl text-gray-900">RS: {data.price}</span>
+              <span className="title-font font-medium text-2xl text-gray-900">
+                {data.availableQty > 0 ? `RS: ${data.price}` : "Out of stock!"}
+              </span>
 
-              <button onClick={() => { addToCart(slug+size+color, 1, "Karachi", data.price, data.title , size, color,data.img) }} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6">
-                Add to Cart</button>
+              <button
+                disabled={data.availableQty <= 0}
+                onClick={() => {
+                  addToCart(
+                    slug + size + color,
+                    1,
+                    "Karachi",
+                    data.price,
+                    data.title,
+                    size,
+                    color,
+                    data.img
+                  );
+                }}
+                className="flex ml-auto text-white disabled:bg-pink-300 bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6"
+              >
+                Add to Cart
+              </button>
 
-              <button onClick={buyNow} className="flex ml-auto text-white bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6">
-                Buy Now</button>
+              <button
+                disabled={data.availableQty <= 0}
+                onClick={buyNow}
+                className="flex ml-auto text-white disabled:bg-pink-300 bg-pink-500 border-0 py-2 px-1 focus:outline-none hover:bg-pink-600 rounded md:px-6"
+              >
+                Buy Now
+              </button>
 
               <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
-                <svg fill="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" className="w-5 h-5" viewBox="0 0 24 24">
+                <svg
+                  fill="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-5 h-5"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
                 </svg>
               </button>
             </div>
-            <div className='pin mt-6 block space-x-2text-sm'>
-              <p>Enter your zipcode to check whether the delivery service is available in your area or not.</p>
+            <div className="pin mt-6 block space-x-2text-sm">
+              <p>
+                Enter your zipcode to check whether the delivery service is
+                available in your area or not.
+              </p>
 
-              <div className='flex my-2'>
-                <input onChange={handleChange} value={zipCode} placeholder='Enter your zipcode' className='p-2 border-2  border-gray-400 rounded-md' type="text" />
-                <button onClick={handleClick} className="flex ml-4 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded md:px-6">Check Zip Code</button>
+              <div className="flex my-2">
+                <input
+                  onChange={handleChange}
+                  value={zipCode}
+                  placeholder="Enter your zipcode"
+                  className="p-2 border-2  border-gray-400 rounded-md"
+                  type="text"
+                />
+                <button
+                  onClick={handleClick}
+                  className="flex ml-4 text-white bg-pink-500 border-0 py-2 px-2 focus:outline-none hover:bg-pink-600 rounded md:px-6"
+                >
+                  Check Zip Code
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export async function getServerSideProps(context) {
-
-  const data = await product.findOne({ slug: context.query.slug })
+  const data = await product.findOne({ slug: context.query.slug });
+  if (!data) {
+    return {
+      props: { error: true },
+    };
+  }
   // Pass data to the page via props
   return {
-    props: { data: JSON.parse(JSON.stringify(data)) }
-  }
-
+    props: { error: false, data: JSON.parse(JSON.stringify(data)) },
+  };
 }
