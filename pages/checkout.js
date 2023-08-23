@@ -58,7 +58,7 @@ const checkout = ({ subtotal, clearCart, cart, handlePayment }) => {
 
     toast.error(response.message, {
       position: "top-center",
-      autoClose: 500,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

@@ -11,6 +11,12 @@ const router = createRouter();
 router.post(async (req, res) => {
   //initiating new order
   try {
+    //Checking that cart is not empty
+    if (req.body.amount <= 0) {
+     return res
+        .status(200)
+        .json({ success: false, message: "Cannot proceed with empty cart" });
+    }
     //Checking if item is out of stock
     const products = req.body.products;
     // console.log(products);
@@ -21,12 +27,10 @@ router.post(async (req, res) => {
       // console.log(Product , products[item]);
       // console.log(Product.availableQty,products[item].qty);
       if (Product.availableQty < products[item].qty) {
-        return res
-          .status(200)
-          .json({
-            success: false,
-            message: "Sorry Some items went out of stock",
-          });
+        return res.status(200).json({
+          success: false,
+          message: "Sorry Some items went out of stock",
+        });
       }
     }
 
@@ -45,7 +49,10 @@ router.post(async (req, res) => {
     await Order.save();
 
     for (let item in products) {
-       await product.findOneAndUpdate({ slug: item } , {$inc :{"availableQty": -products[item].qty}});
+      await product.findOneAndUpdate(
+        { slug: item },
+        { $inc: { availableQty: -products[item].qty } }
+      );
     }
 
     res.status(200).json({ success: true });
