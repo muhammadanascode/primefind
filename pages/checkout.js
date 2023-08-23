@@ -1,12 +1,32 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState ,useEffect } from "react";
 import StripeCheckout from "react-stripe-checkout";
 import {  toast } from "react-toastify";
+import jwt_decode from "jwt-decode";
 
 
 const checkout = ({ subtotal, clearCart, cart, handlePayment }) => {
   const router = useRouter();
-  //Handling CheckOut functionality
+  
+  //email State
+  const[email,setEmail] = useState("")
+
+  useEffect(() => {
+
+    //Fetching user's Email from jwt token
+    if(localStorage.getItem('token')){
+     const token = localStorage.getItem('token')
+     const decodedToken = jwt_decode(token)
+     setEmail(decodedToken.email)
+    }
+    //if token doesnot exist
+    else{
+      router.push('/login')
+    }
+
+  }, [])
+  
+   //Handling CheckOut functionality
   const handleCheckOut = async (paymentInfo) => {
     // console.log(paymentInfo);
 
@@ -65,6 +85,7 @@ const checkout = ({ subtotal, clearCart, cart, handlePayment }) => {
           amount={subtotal * 100}
           zipCode={true}
           currency="PKR"
+          email={email}
         />
       </div>
     </>
