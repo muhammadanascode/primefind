@@ -25,8 +25,8 @@ export default function Slug({ addToCart, data, error }) {
     try {
       let pin = await fetch("http://localhost:3000/api/pincode");
       let res = await pin.json();
-      console.log(res);
-      if (res.includes(parseInt(zipCode))) {
+      // console.log(res);
+      if (Object.keys(res).includes(zipCode)) {
         toast.success(" Your pincode is servicable", {
           position: "top-center",
           autoClose: 1000,

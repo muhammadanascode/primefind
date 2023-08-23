@@ -2,6 +2,7 @@ import { createRouter } from "next-connect";
 import connectDb from "@/utils/connectDb";
 import order from "@/model/order";
 import product from "@/model/product";
+import pincodes from "../../pincode.json";
 
 // Database connection
 connectDb();
@@ -11,9 +12,19 @@ const router = createRouter();
 router.post(async (req, res) => {
   //initiating new order
   try {
+    //Checking that the pincode is serviceable
+    if (!Object.keys(pincodes).includes(req.body.zipcode)) {
+      return res
+        .status(200)
+        .json({
+          success: false,
+          message: "Sorry! This pincode is not serviceable",
+        });
+    }
+
     //Checking that cart is not empty
     if (req.body.amount <= 0) {
-     return res
+      return res
         .status(200)
         .json({ success: false, message: "Cannot proceed with empty cart" });
     }
@@ -41,6 +52,7 @@ router.post(async (req, res) => {
       address: req.body.address,
       amount: req.body.amount,
       status: req.body.status,
+      zipcode: req.body.zipcode,
     });
 
     // console.log(req.body.products);

@@ -37,6 +37,8 @@ const checkout = ({ subtotal, clearCart, cart, handlePayment }) => {
       address: paymentInfo.card.address_line1,
       amount: subtotal,
       status: "Pending",
+      zipcode:paymentInfo.card.address_zip
+
     };
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/order`, {
@@ -48,7 +50,7 @@ const checkout = ({ subtotal, clearCart, cart, handlePayment }) => {
     });
 
     const response = await res.json();
-    console.log(response);
+    // console.log(response);
 
     if (response.success) {
       handlePayment(paymentInfo);

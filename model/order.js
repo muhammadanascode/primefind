@@ -8,6 +8,7 @@ const OrderSchema = new mongoose.Schema({
     address:{ type: String , required: true} , 
     amount : {type: Number , required: true},
     status : {type: String  , default: "Pending" , required: true},
+    zipcode :{type: String , required:true}
 }   , {timestamps : true})
 
 // mongoose.models= {}
