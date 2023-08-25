@@ -17,8 +17,9 @@ const myaccount = () => {
 
     const res = await response.json();
 
+    //If api failed to fetched user data
     if (!res.success) {
-      toast.warn("Session time out . Login again", {
+      toast.warn(res.message, {
         position: "top-center",
         autoClose: 500,
         hideProgressBar: false,
