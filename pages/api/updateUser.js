@@ -39,7 +39,7 @@ router.post(async (req, res) => {
         name: name,
       }
     );
-    console.log(User);
+    // console.log(User);
     //incase user didnot found or any error acured in updating
     if (!User) {
       return res
