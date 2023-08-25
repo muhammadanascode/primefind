@@ -2,7 +2,6 @@ import connectDb from "@/utils/connectDb";
 import user from "@/model/user";
 import { createRouter } from "next-connect";
 var CryptoJS = require("crypto-js");
-var jwt = require("jsonwebtoken");
 
 // Database connection
 connectDb();
@@ -13,7 +12,22 @@ router.post(async (req, res) => {
   try {
     //Extracting user data
     const { name, password, email } = req.body;
-    // console.log(name,password,email);
+    if (password.length === 0) {
+      //Finding user and updating his credentials
+      let User = await user.findOneAndUpdate(
+        { email: email },
+        {
+          name: name,
+        }
+      );
+      return res
+        .status(200)
+        .json({
+          success: true,
+          message: "Username updated successfully",
+          credentials: false,
+        });
+    }
     //Finding user and updating his credentials
     let User = await user.findOneAndUpdate(
       { email: email },
@@ -35,7 +49,11 @@ router.post(async (req, res) => {
     //If no error occured
     res
       .status(200)
-      .json({ success: true, message: "Credentials updated successfully" });
+      .json({
+        success: true,
+        message: "Credentials updated successfully",
+        credentials: true,
+      });
   } catch (error) {
     //If server error occured
     console.log(error);

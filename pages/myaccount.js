@@ -63,64 +63,64 @@ const myaccount = () => {
   //Function to submit the form
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (userName.length > 2) {
+      if (
+        (newPassword === confirmPassword && newPassword.length > 5) ||
+        (!newPassword && !confirmPassword)
+      ) {
+        try {
+          const response = await fetch("/api/updateUser", {
+            method: "POST",
+            body: JSON.stringify({
+              name: userName,
+              password: newPassword,
+              email,
+            }),
+            headers: { "Content-Type": "application/json" },
+          });
+          const res = await response.json();
 
-    if (
-      (userName.length > 2 && newPassword.length > 2) ||
-      userName.length > 2
-    ) {
-      //If new password and confirm password arenot equal
-      if (newPassword === confirmPassword) {
-        const response = await fetch("/api/updateUser", {
-          method: "POST",
-          body: JSON.stringify({
-            name: userName,
-            password:newPassword,
-            email,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const res = await response.json();
-        console.log(res);
-        // If data successfully updated
-        if (res.success) {
-          toast.success("Credentials updated successfully", {
-            position: "top-center",
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          //Removing jwt token from local storage
-          localStorage.removeItem("token");
-          //Redirecting user to login page
-          router.push("/login");
-          return;
+          if (res.success) {
+            const successMessage = res.credentials
+              ? "Credentials updated successfully"
+              : "Username updated successfully";
+
+            toast.success(successMessage, {
+              position: "top-center",
+              autoClose: 500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+
+            if (res.credentials) {
+              localStorage.removeItem("token");
+              router.push("/login");
+            }
+          } else {
+            toast.error(res.message, {
+              position: "top-center",
+              autoClose: 500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            });
+          }
+        } catch (error) {
+          console.log(
+            "Error occured in fetching api in my account.js " + error
+          );
         }
-        //if any error occured in updating data
-        else {
-          toast.success(res.message, {
-            position: "top-center",
-            autoClose: 500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-          return;
-        }
-      }
-      //If new password and confirm password arenot equal
-      else {
-        toast.error("New password and confirm password must be equal", {
+      } else {
+        toast.error("Matching passwords, 5+ characters required", {
           position: "top-center",
-          autoClose: 500,
+          autoClose: 1000,
           hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
@@ -128,14 +128,11 @@ const myaccount = () => {
           progress: undefined,
           theme: "light",
         });
-        return;
       }
-    }
-    //If username is less than 3 characters
-    else {
-      toast.error("Username must be of 3 characters", {
+    } else {
+      toast.error("Username must be at least 3 characters", {
         position: "top-center",
-        autoClose: 500,
+        autoClose: 1000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -143,7 +140,6 @@ const myaccount = () => {
         progress: undefined,
         theme: "light",
       });
-      return;
     }
   };
 
