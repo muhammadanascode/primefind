@@ -103,11 +103,6 @@ export default function Navbar({
                 <li onClick={Logout} className="px-4 py-2 hover:bg-pink-400">
                   Logout
                 </li>
-                <Link href={"changepassword"}>
-                  <li className="px-4 py-2 hover:bg-pink-400">
-                    Change password
-                  </li>{" "}
-                </Link>
               </ul>
             </div>
           ) : null}
