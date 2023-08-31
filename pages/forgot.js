@@ -7,15 +7,20 @@ import { toast } from "react-toastify";
 const Forgot = () => {
   const [email, setEmail] = useState("");
   const [istoken, setIsToken] = useState(false);
-  const [newPassword, setNewPassword ] = useState("");
-  const [confirmPassword ,  setConfirmPassword] = useState("");
+  const [token, setToken] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const router = useRouter();
   useEffect(() => {
     if (localStorage.getItem("token")) {
       router.push("/");
     }
-  }, []);
+    if (router.query.token) {
+      setIsToken(true);
+      setToken(router.query.token);
+    }
+  }, [router.query]);
 
   const handleClick = async () => {
     const response = await fetch("/api/forgot", {
@@ -29,7 +34,7 @@ const Forgot = () => {
     const res = await response.json();
     console.log(res);
     if (res.success) {
-      toastsuccess("res.message", {
+      toast.success(res.message, {
         position: "top-center",
         autoClose: 500,
         hideProgressBar: false,
@@ -53,8 +58,8 @@ const Forgot = () => {
     }
   };
 
-  const handlePassword = ()=>{
-    if(newPassword !== confirmPassword){
+  const handlePassword = () => {
+    if (newPassword !== confirmPassword) {
       toast.error("Passwords should be same", {
         position: "top-center",
         autoClose: 500,
@@ -65,13 +70,12 @@ const Forgot = () => {
         progress: undefined,
         theme: "light",
       });
-      return
+      return;
     }
-  }
+  };
 
   return (
     <>
-      {console.log(router.query.token)}
       <section className="-mt-10 flex justify-center items-center h-screen bg-gray-100">
         <div className="max-w-md w-full bg-white rounded p-6 space-y-4">
           <div className="mb-4">
@@ -132,7 +136,7 @@ const Forgot = () => {
                   onClick={handlePassword}
                   className="w-full py-4 bg-pink-600 hover:bg-pink-700 rounded text-sm font-bold text-gray-50 transition duration-200"
                 >
-                Change Password
+                  Change Password
                 </button>
               </div>
             </div>

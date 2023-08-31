@@ -63,7 +63,8 @@ export default function SignUp() {
         progress: undefined,
         theme: "light",
       });
-
+      
+      router.push('/login')
     }
 
     catch (error) {

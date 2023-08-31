@@ -62,7 +62,7 @@ export default function Login() {
           theme: "light",
         });
         setTimeout(() => {
-          router.push(`${process.env.NEXT_PUBLIC_HOST}`)
+          router.replace('/')
         }, 1100);
       }
       else {
