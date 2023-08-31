@@ -43,8 +43,8 @@ router.post(async (req, res) => {
   <p>We've received a request to reset the password for your account at <strong>PrimeFind.com</strong>.</p>
   <p>To verify your identity and ensure the security of your account, please use the following One-Time Password (OTP):</p>
   <p>Your OTP: <strong>${token}</strong></p>
-  <p>Your token is valid for only 15 minutes</p>
-  <p><a href="https://PrimeFind.com/forgot?token=${token}"><strong>Click here to reset your password</strong></a></p>
+  <p>Your token is valid for only 10 minutes</p>
+  <p><a href="https://PrimeFind.com/forgot?token=${token}&email=${email}"><strong>Click this url to reset password</strong></a></p>
   <p><br><strong>Best regards,</strong><br>The PrimeFind Team</p>
 </body>
 </html>`;

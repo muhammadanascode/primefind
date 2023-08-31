@@ -19,6 +19,7 @@ const Forgot = () => {
     if (router.query.token) {
       setIsToken(true);
       setToken(router.query.token);
+      setEmail(router.query.email);
     }
   }, [router.query]);
 
@@ -32,7 +33,8 @@ const Forgot = () => {
     });
 
     const res = await response.json();
-    console.log(res);
+    // console.log(res);
+    //If otp send successfully
     if (res.success) {
       toast.success(res.message, {
         position: "top-center",
@@ -44,7 +46,11 @@ const Forgot = () => {
         progress: undefined,
         theme: "light",
       });
-    } else {
+      setEmail('')
+      return 
+    }
+      //In case of any error
+      else {
       toast.error(res.message, {
         position: "top-center",
         autoClose: 500,
@@ -58,7 +64,7 @@ const Forgot = () => {
     }
   };
 
-  const handlePassword = () => {
+  const handlePassword = async () => {
     if (newPassword !== confirmPassword) {
       toast.error("Passwords should be same", {
         position: "top-center",
@@ -70,6 +76,61 @@ const Forgot = () => {
         progress: undefined,
         theme: "light",
       });
+      return;
+    }
+    if (newPassword.length < 5) {
+      toast.error("Passwords should be of at least 5 characters", {
+        position: "top-center",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+    const response = await fetch("/api/otpverification", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newPassword, token, email }),
+    });
+    const res = await response.json();
+    // console.log(res);
+
+    // Password changed successfully
+    if (res.success) {
+      toast.success(res.message, {
+        position: "top-center",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      router.replace("/login");
+      return;
+    }
+    //In case of any error
+    else {
+      toast.error(res.message, {
+        position: "top-center",
+        autoClose: 500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+
+      setNewPassword("");
+      setConfirmPassword("");
       return;
     }
   };
@@ -89,7 +150,7 @@ const Forgot = () => {
           {/* If user comes with link */}
           {!istoken && (
             <div>
-              <div>
+              <div className="mt-2">
                 <input
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full p-4 text-sm bg-gray-50 focus:outline-none border border-gray-200 rounded text-gray-600"
@@ -98,7 +159,7 @@ const Forgot = () => {
                   required
                 />
               </div>
-              <div>
+              <div className="mt-2">
                 <button
                   onClick={handleClick}
                   className="w-full py-4 bg-pink-600 hover:bg-pink-700 rounded text-sm font-bold text-gray-50 transition duration-200"
@@ -114,8 +175,8 @@ const Forgot = () => {
               <div>
                 <input
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="w-full p-4 text-sm bg-gray-50 focus:outline-none border border-gray-200 rounded text-gray-600"
-                  type="text"
+                  className="w-full p-4 text-sm bg-gray-50 focus:outline-none border border-gray-200 rounded text-gray-600 mb-2"
+                  type="password"
                   value={newPassword}
                   placeholder="New Password"
                   required
@@ -124,14 +185,14 @@ const Forgot = () => {
                 <input
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="w-full p-4 text-sm bg-gray-50 focus:outline-none border border-gray-200 rounded text-gray-600"
-                  type="text"
+                  type="password"
                   value={confirmPassword}
                   placeholder="Confirm Password"
                   required
                   min={5}
                 />
               </div>
-              <div>
+              <div className="mt-2">
                 <button
                   onClick={handlePassword}
                   className="w-full py-4 bg-pink-600 hover:bg-pink-700 rounded text-sm font-bold text-gray-50 transition duration-200"
