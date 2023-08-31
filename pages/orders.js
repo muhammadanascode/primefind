@@ -33,7 +33,7 @@ const orders = ({}) => {
   }, []);
 
   return (
-    <div className="container m-auto mt-6">
+    <div className="h-screen container m-auto mt-6">
       <h1 className="font-bold text-4xl text-center mb-8 text-pink-700">
         My Orders
       </h1>
@@ -77,7 +77,7 @@ const orders = ({}) => {
                   </tr>
                 ))
               : ""}
-          </tbody>
+          </tbody> 
         </table>
       </div>
     </div>
