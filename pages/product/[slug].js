@@ -91,7 +91,7 @@ export default function Slug({ addToCart, data, error }) {
         <div className="lg:w-4/5 mx-auto flex flex-wrap">
           <img
             alt="img"
-            className=" object-cover object-center rounded"
+            className="w-1/3 h-1/3 object-cover object-center rounded"
             src={data.img}
           />
           <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
@@ -201,65 +201,72 @@ export default function Slug({ addToCart, data, error }) {
             </div>
             <p className="leading-relaxed">{data.description}.</p>
             <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-              <div className="flex">
-                <span className="mr-3">Color</span>
+              {data.color ? (
+                <div className="flex">
+                  <span className="mr-3">Color</span>
 
-                {Array.isArray(data.color) ? (
-                  data.color.map((col) => {
-                    return (
-                      <button
-                        onClick={(e) => handleColor(e.target.value)}
-                        key={col}
-                        value={col}
-                        className={`border-2 border-${col}-300 bg-${col}-500  rounded-full w-6 h-6 focus:outline-none cursor-pointer`}
-                      ></button>
-                    );
-                  })
-                ) : (
-                  <button
-                    onClick={(e) => handleColor(e.target.value)}
-                    value={data.color}
-                    className={`border-2 border-${data.color}-300 bg-${data.color}-500 rounded-full w-6 h-6 focus:outline-none cursor-pointer`}
-                  ></button>
-                )}
-              </div>
-              <div className="flex ml-6 items-center">
-                <span className="mr-3">Size</span>
-                <div className="relative">
-                  <select
-                    value={size}
-                    onChange={(e) => handleSize(e.target.value)}
-                    className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
-                  >
-                    <option value={""}>Select Size</option>
-                    {data.size.includes("S") ? (
-                      <option value={"S"}>SM</option>
-                    ) : null}
-                    {data.size.includes("M") ? (
-                      <option value={"M"}>M</option>
-                    ) : null}
-                    {data.size.includes("L") ? (
-                      <option value={"L"}>L</option>
-                    ) : null}
-                    {data.size.includes("XL") ? (
-                      <option value={"XL"}>XL</option>
-                    ) : null}
-                  </select>
-                  <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                    <svg
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="w-4 h-4"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M6 9l6 6 6-6"></path>
-                    </svg>
-                  </span>
+                  {Array.isArray(data.color) ? (
+                    data.color.map((col) => {
+                      return (
+                        <button
+                          onClick={(e) => handleColor(e.target.value)}
+                          key={col}
+                          value={col}
+                          className={`border-2 border-${col}-300 bg-${col}-800  rounded-full w-6 h-6 focus:outline-none cursor-pointer`}
+                        ></button>
+                      );
+                    })
+                  ) : (
+                    <button
+                      onClick={(e) => handleColor(e.target.value)}
+                      value={data.color}
+                      className={`border-2 border-${data.color}-300 bg-${data.color}-800 rounded-full w-6 h-6 focus:outline-none cursor-pointer`}
+                    ></button>
+                  )}
                 </div>
-              </div>
+              ) : null}
+              
+              {data.size ? (
+                <div className="flex ml-6 items-center">
+                  <span className="mr-3">Size</span>
+                  <div className="relative">
+                    <select
+                      value={size}
+                      onChange={(e) => handleSize(e.target.value)}
+                      className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
+                    >
+                      <option value={""}>Select Size</option>
+                      {data.size.includes("S") ? (
+                        <option value={"S"}>SM</option>
+                      ) : null}
+                      {data.size.includes("M") ? (
+                        <option value={"M"}>M</option>
+                      ) : null}
+                      {data.size.includes("L") ? (
+                        <option value={"L"}>L</option>
+                      ) : null}
+                      {data.size.includes("XL") ? (
+                        <option value={"XL"}>XL</option>
+                      ) : null}{" "}
+                      : null
+                    </select>
+
+                    <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                      <svg
+                        fill="none"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        className="w-4 h-4"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M6 9l6 6 6-6"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </div>
+              ) : null}
             </div>
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">

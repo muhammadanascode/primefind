@@ -20,15 +20,15 @@ router.get(async (req, res) => {
 
     for (let item of products) {
       if (item.title in tshirts) {
-        if (!tshirts[item.title].color.includes(item.color) && item.availabeQty > 0) {
+        if (!tshirts[item.title].color.includes(item.color) && item.availableQty > 0) {
           tshirts[item.title].color.push(item.color);
         }
-        if (!tshirts[item.title].size.includes(item.size) && item.availabeQty > 0) {
+        if (!tshirts[item.title].size.includes(item.size) && item.availableQty > 0) {
           tshirts[item.title].size.push(item.size);
         }
       } else {
         tshirts[item.title] = item;
-        if (item.availabeQty > 0) {
+        if (item.availableQty > 0) {
           tshirts[item.title].color = [item.color];
           tshirts[item.title].size = [item.size]
         }
@@ -49,8 +49,8 @@ router.get(async (req, res) => {
 // POST Request to create a new product
 router.post(async (req, res) => {
   try {
-    const { title, slug, description, img, category, size, color, price, availabeQty } = req.body;
-    const newProduct = new product({ title, slug, description, img, category, size, color, price, availabeQty });
+    const { title, slug, description, img, category, size, color, price, availableQty } = req.body;
+    const newProduct = new product({ title, slug, description, img, category, size, color, price, availableQty });
     await newProduct.save();
     res.status(200).json({ success: "Product created." });
   } catch (error) {

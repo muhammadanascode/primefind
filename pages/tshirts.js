@@ -11,9 +11,9 @@ export default function Tshirts({ product }) {
         <div className="flex flex-wrap -m-4 ">
 
           {Object.keys(product).length > 0 ? Object.keys(product).map((item) => {
-            return <div key={product[item]._id} className="lg:w-1/4 md:w-1/2 p-4 w-full ">
+            return <div key={product[item]._id} className="lg:w-1/4 md:w-1/2 p-4 w-full shadow-lg mx-8 hover:shadow-pink-300 hover:cursor-pointer">
               <a className="block relative h-48 rounded overflow-hidden">
-                <img alt="ecommerce" className="object-cover object-center w-full h-full block" src={product[item].img} />
+                <img alt="ecommerce" className="object-contain object-center max-w-full max-h-full w-full h-auto block" src={product[item].img} />
               </a>
               <div className="mt-4">
                 <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">Category: {product[item].category}</h3>

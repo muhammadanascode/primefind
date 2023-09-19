@@ -69,8 +69,8 @@ export default function Navbar({
               {" "}
               <li className="hover:text-pink-600">Watches</li>
             </Link>
-            <Link href={"/stickers"}>
-              <li className="hover:text-pink-600">Stickers</li>
+            <Link href={"/shoes"}>
+              <li className="hover:text-pink-600">Shoes</li>
             </Link>
           </ul>
         </div>

@@ -2,8 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 
 
-
-export default function Hoodies({ product }) {
+export default function Shoes({ product }) {
   // console.log(product);
   return (
     <section className="text-gray-600 body-font">
@@ -12,7 +11,7 @@ export default function Hoodies({ product }) {
         <div className="flex flex-wrap -m-4 ">
 
           {Object.keys(product).length > 0 ? Object.keys(product).map((item) => {
-            return <div key={product[item]._id} className="lg:w-1/4 md:w-1/2 p-4 w-full shadow-lg hover:shadow-pink-300 hover:cursor-pointer  ">
+            return <div key={product[item]._id} className="lg:w-1/4 md:w-1/2 p-4 w-full shadow-lg mx-8 hover:shadow-pink-300 hover:cursor-pointer">
               <a className="block relative h-48 rounded overflow-hidden">
                 <img alt="ecommerce" className="object-contain object-center max-w-full max-h-full w-full h-auto block" src={product[item].img} />
               </a>
@@ -34,7 +33,7 @@ export default function Hoodies({ product }) {
                   {product[item].color.includes('green') && <button className="border-2 border-gray-300 ml-1 bg-green-500 rounded-full w-6 h-6 focus:outline-none"></button>}
                   {product[item].color.includes('yellow') && <button className="border-2 border-gray-300 ml-1 bg-yellow-500 rounded-full w-6 h-6 focus:outline-none"></button>}
                   {product[item].color.includes('purple') && <button className="border-2 border-gray-300 ml-1 bg-purple-500 rounded-full w-6 h-6 focus:outline-none"></button>}
-                  {product[item].color.includes('black') && <button className="border-2 border-gray-300 ml-1 bg-black-500 rounded-full w-6 h-6 focus:outline-none"> </button>}
+                  {product[item].color.includes('gray') && <button className="border-2 border-gray-300 ml-1 bg-gray-800 rounded-full w-6 h-6 focus:outline-none"> </button>}
                 </div>
 
                 <p className="mt-1">Price: RS {product[item].price}</p>
@@ -55,18 +54,17 @@ export default function Hoodies({ product }) {
 }
 
 export async function getServerSideProps() {
-  try {
-    // Fetch data from external API with the desired category as a query parameter
-    const category = 'Hoodie';
-    const apiUrl = `${process.env.NEXT_PUBLIC_HOST}/api/product/tshirt?category=${category}`;
-    const res = await fetch(apiUrl);
-    const data = await res.json();
 
+  try {
+    // Fetch data from external API
+    const category = "shoes"
+    const res = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/product/tshirt/?category=${category}`)
+    const data = await res.json()
     // Pass data to the page via props
-    return { props: { product: data } };
+    return { props: { product: data } }
+
   } catch (error) {
-    console.log("Error occurred in fetching API of hoodies: " + error);
-    // You may also want to handle errors and return an error prop, so the page can display an error message.
-    return { props: { error: "An error occurred while fetching data." } };
+    console.log("Error occured in fetching api of tshirts " + error);
   }
+
 }
