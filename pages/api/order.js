@@ -29,14 +29,14 @@ router.post(async (req, res) => {
         .json({ success: false, message: "Cannot proceed with empty cart" });
     }
     //Checking if item is out of stock
-    const products = req.body.products;
-    // console.log(products);
+    const {products} = req.body.products;
+    console.log(products);
 
     for (let item in products) {
       // console.log(item);
       const Product = await product.findOne({ slug: item });
-      // console.log(Product , products[item]);
-      // console.log(Product.availableQty,products[item].qty);
+     
+      console.log(Product);
       if (Product.availableQty < products[item].qty) {
         return res.status(200).json({
           success: false,
